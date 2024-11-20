@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado FIPP</title>
+
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!--Jquery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+
+    <!--Ícones-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../../estilocomum.css">
+    <script defer src="script.js"></script>
+    <script defer src="../../acessoAside.js"></script>
+</head>
+
+<body>
+    <header class="d-flex justify-content-between">
+        <a style="text-decoration: none; color: white;" href="../../index.html"><h1>Mercado FIPP</h1></a>
+        <a style="color: white;" href="../../login/pagina.html"><h4 style="cursor: pointer;" onclick="deslogar()"><i class="fa-solid fa-right-to-bracket" style="padding: 20px;"></i></h4></a>
+    </header>
+    <aside>
+        <ul>
+            <li class="d-none acesso-3"><a href="../../ver-anuncios/pagina.html">Ver anúncios</a></li>
+            <li class="d-none acesso-2"><a href="../../meus-anuncios/pagina.html">Meus anúncios</a></li>
+            <li class="d-none acesso-1"><a href="../../adm/categorias/pagina.html">Categorias</a></li>
+            <li class="d-none acesso-1"><a href="../../adm/usuarios/pagina.html">Usuários</a></li>
+        </ul>
+    </aside>
+    <main>
+        <h1>Categorias</h1>
+        <div class="d-flex pt-4 pb-3">
+            <div class="me-auto">
+                <input type="button" id="btnadicionar" value="Adicionar" data-bs-toggle="modal"
+                    data-bs-target="#modalAdicionar">
+                <input type="button" id="btneditar" value="Editar" onclick="abrirModalEditar()">
+                <input id="btnAbrirModalEditar" type="hidden" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                <input type="button" id="btnexcluir" value="Excluir" onclick="deletar()">
+            </div>
+            <div class="ms-auto">
+                <input type="search" name="pesquisa" id="pesquisa" placeholder="Sem filtro">
+                <input type="button" name="btnpesquisa" id="btnpesquisa" value="Procurar" onclick="carregarTabela()">
+            </div>
+        </div>
+        <table class="table table-hover border">
+            <thead>
+                <th></th>
+                <th>ID </th>
+                <th>NOME </th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="modal" id="modalAdicionar">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Adicionar</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="$('#name').val('')"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <label for="addNomeCategoria" class="d-block">NOME:</label>
+                        <input type="text" name="addNomeCategoria" id="addNomeCategoria">
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button id="fecharAdd" type="button" data-bs-dismiss="modal" onclick="$('#name').val('')">Fechar</button>
+                        <button type="button" onclick="adicionar()">Adicionar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="modalEditar">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Editar</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="$('#name').val('')"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <label for="editarIdCategoria" class="d-block">ID:</label>
+                        <input type="number" name="editarIdCategoria" id="editarIdCategoria" disabled>
+                    </div>
+                    <div class="modal-body">
+                        <label for="editarNomeCategoria" class="d-block">NOME:</label>
+                        <input type="text" name="editarNomeCategoria" id="editarNomeCategoria">
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button id="fecharEditar" type="button" data-bs-dismiss="modal" onclick="$('#name').val('')">Fechar</button>
+                        <button type="button" onclick="adicionar()">Alterar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
