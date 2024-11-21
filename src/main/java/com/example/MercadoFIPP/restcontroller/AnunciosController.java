@@ -6,7 +6,9 @@ import com.example.MercadoFIPP.db.entity.Ad;
 import com.example.MercadoFIPP.db.entity.Foto;
 import com.example.MercadoFIPP.db.entity.Pergunta;
 import com.example.MercadoFIPP.db.entity.User;
+import com.example.MercadoFIPP.restcontroller.security.JWTTokenProvider;
 import com.example.MercadoFIPP.service.*;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.objenesis.ObjenesisHelper;
@@ -112,20 +114,6 @@ public class AnunciosController {
     }
 
     @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
-    @PostMapping(value = "addPerguntas")
-    public ResponseEntity<Object> addPergunta(PerguntasDTO perguntasDTO)
-    {
-        try{
-            Pergunta perg = perguntaService.add(new Pergunta(perguntasDTO.getPergunta(),adService.getAd(perguntasDTO.getIdAnuncio()),userService.getOne(perguntasDTO.getIdUser())));
-            return ResponseEntity.ok(perg);
-        }
-        catch (Exception e)
-        {
-            return ResponseEntity.badRequest().body("erro");
-        }
-    }
-
-    @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
     @GetMapping(value = "get-one-anuncio")
     public ResponseEntity<Object> getAnuncio(Long id)
     {
@@ -139,4 +127,35 @@ public class AnunciosController {
         }
     }
 
+
+    @CrossOrigin(origins = {"http://127.0.0.1:5500/", "http://localhost:5500"})
+    @PostMapping(value = "addPerguntas")
+    public ResponseEntity<Object> addPergunta(@RequestBody PerguntasDTO perguntasDTO, String token)
+    {
+        try{
+            Claims claim = JWTTokenProvider.getAllClaimsFromToken(token);
+            User user = userService.getUsuarioAnuncio(claim.getSubject());
+
+            Pergunta perg = perguntaService.add(new Pergunta(perguntasDTO.getPergunta(),adService.getAd(perguntasDTO.getIdAnuncio()),userService.getOne(user.getId())));
+            return ResponseEntity.ok(perg);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body("erro");
+        }
+    }
+
+    @CrossOrigin(origins = {"http://127.0.0.1:5500/", "http://localhost:5500"})
+    @GetMapping(value = "getPerguntas")
+    public ResponseEntity<Object> getPerguntas(Long id)
+    {
+        try{
+            List<Pergunta> perguntas =  perguntaService.getPerguntas(id);
+            return ResponseEntity.ok(perguntas);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body("Erro");
+        }
+    }
 }

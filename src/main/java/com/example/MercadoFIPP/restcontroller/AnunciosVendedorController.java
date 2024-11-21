@@ -255,4 +255,18 @@ public class AnunciosVendedorController {
             return ResponseEntity.badRequest().body("erro na requisicao do filtro");
         }
     }
+
+    @CrossOrigin(origins = {"http://127.0.0.1:5500/", "http://localhost:5500"})
+    @GetMapping(value = "getPerguntasVendedor")
+    public ResponseEntity<Object> getPerguntasVenddor(Long id)
+    {
+        try{
+            List<Pergunta> perguntas =  perguntaService.getPerguntas(id);
+            return ResponseEntity.ok(perguntas);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body("Erro");
+        }
+    }
 }

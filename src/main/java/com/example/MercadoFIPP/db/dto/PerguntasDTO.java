@@ -14,6 +14,15 @@ public class PerguntasDTO {
         this.idAnuncio = idAnuncio;
     }
 
+    public PerguntasDTO()
+    {
+    }
+
+    public PerguntasDTO(String pergunta, long idAnuncio) {
+        this.pergunta = pergunta;
+        this.idAnuncio = idAnuncio;
+    }
+
     public long getIdPergunta() {
         return idPergunta;
     }

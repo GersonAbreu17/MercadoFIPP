@@ -18,7 +18,9 @@
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 
     <!--Ícones-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <link rel="stylesheet" href="estilo.css">
     <link rel="stylesheet" href="../estilocomum.css">
@@ -28,8 +30,13 @@
 
 <body>
     <header class="d-flex justify-content-between">
-        <a style="text-decoration: none; color: white;" href="../index.html"><h1>Mercado FIPP</h1></a>
-        <a style="color: white;" href="../login/pagina.html"><h4 style="cursor: pointer;" onclick="deslogar()"><i class="fa-solid fa-right-to-bracket" style="padding: 20px;"></i></h4></a>
+        <a style="text-decoration: none; color: white;" href="../index.html">
+            <h1>Mercado FIPP</h1>
+        </a>
+        <a style="color: white;" href="../login/pagina.html">
+            <h4 style="cursor: pointer;" onclick="deslogar()"><i class="fa-solid fa-right-to-bracket"
+                    style="padding: 20px;"></i></h4>
+        </a>
     </header>
     <aside>
         <ul>
@@ -39,14 +46,13 @@
             <li class="d-none acesso-1"><a href="../adm/usuarios/pagina.html">Usuários</a></li>
         </ul>
     </aside>
-    <main>
-        <h1 class="mb-5">Meus anúncios</h1>
-        <div class="d-flex">
-            <a href="anunciar/pagina.html"><button class="btn btn-primary">Adicionar</button></a>
+    <main class="acesso-1">
+        <h1 class="mb-5">Ver anúncios</h1>
+
+        
+        <div id="divAnuncios" class="d-flex flex-wrap">   
         </div>
-        <div id="divAnuncios" class="d-flex">   
-            
-        </div>
+
     </main>
 </body>
 

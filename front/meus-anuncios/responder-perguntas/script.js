@@ -62,6 +62,9 @@ function carregarPerguntas(perguntas){
 
     for(let pergunta of perguntas)
     {
+        let htmlResposta;
+
+
         $(".perguntas").append(
             `<div class="pergunta mb-3">
                 <p class="questao">
@@ -72,38 +75,20 @@ function carregarPerguntas(perguntas){
                     <strong>Vendedor: </strong>
                     ${pergunta.resp != null ? pergunta.resp : ""}
                 </p>
+                <div class="perguntar acesso-2 mt-3">
+                    <textarea class="form-control" type="text" name="perguntar" id="perguntar"></textarea>
+                    <button onclick="responder(${pergunta.id})" class="btn-perguntar btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
             </div>`
         )
     }
 }
 
-function perguntar(){
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer "+sessionStorage.getItem("authToken"));
-
-    const raw = JSON.stringify({
-        "pergunta": $("#perguntar").val(),
-        "idAnuncio": anuncio_id
-    });
-
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow"
-    };
-
-    fetch("http://localhost:8080/api/user/anuncios/addPerguntas?token=" + sessionStorage.getItem("authToken"), requestOptions)
-    .then((response) => response.text())
-    .then((result) => {
-        console.log(result)
-        carregarAnuncio();
-        $("#perguntar").val("");
-    })
-    .catch((error) => console.error(error));
-}
-
 (function inicializar(){
     carregarAnuncio();
 })();
+
+function responder(id)
+{
+    
+}
