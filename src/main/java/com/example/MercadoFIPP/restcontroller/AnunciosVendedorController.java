@@ -2,6 +2,7 @@ package com.example.MercadoFIPP.restcontroller;
 
 import com.example.MercadoFIPP.db.dto.AdDTO;
 import com.example.MercadoFIPP.db.dto.AnuncioDTO;
+import com.example.MercadoFIPP.db.dto.PerguntasDTO;
 import com.example.MercadoFIPP.db.entity.*;
 import com.example.MercadoFIPP.restcontroller.security.JWTTokenProvider;
 import com.example.MercadoFIPP.service.*;
@@ -47,6 +48,39 @@ public class AnunciosVendedorController {
             Claims claim = JWTTokenProvider.getAllClaimsFromToken(token);
             User user = userService.getUsuarioAnuncio(claim.getSubject());
             List<Ad> listaAnuncios = adService.getAnunciosVendedor(user.getId());
+
+            if (listaAnuncios.isEmpty()) {
+                return ResponseEntity.ok(Collections.emptyList());
+            }
+
+            List<AnuncioDTO> responseDTOs = new ArrayList<>();
+
+            for (Ad anuncio : listaAnuncios) {
+                List<String> perguntas = perguntaService.getPerguntas(anuncio.getId())
+                        .stream()
+                        .map(Pergunta::getText)
+                        .toList();
+
+                String categoria = categoryService.getOne(anuncio.getCategory().getId()).getName();
+
+                List<String> fotos = fotoService.getFotos(anuncio.getId())
+                        .stream()
+                        .map(Foto::getFilename)
+                        .toList();
+
+                responseDTOs.add(new AnuncioDTO(anuncio, fotos, perguntas, categoria));
+            }
+            return ResponseEntity.ok(responseDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao buscar anúncios: " + e.getMessage());
+        }
+    }
+
+    @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
+    @GetMapping(value = "anunciosCategoria")
+    public ResponseEntity<Object> getAnunciosCategoria(String cat) {
+        try {
+            List<Ad> listaAnuncios = adService.getAnuncioCategoria(categoryService.getCategory(cat));
 
             if (listaAnuncios.isEmpty()) {
                 return ResponseEntity.ok(Collections.emptyList());
@@ -130,6 +164,7 @@ public class AnunciosVendedorController {
         {
             perguntaService.delete(id) ;
             fotoService.delete(id);
+            fotoService.delete(id);
             adService.delAd(id);
             return ResponseEntity.ok().body("Anuncio deletado");
         }catch (Exception e)
@@ -191,4 +226,19 @@ public class AnunciosVendedorController {
         }
     }
 
+    @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
+    @PostMapping(value = "addResposta")
+    public ResponseEntity<Object> addResposta(PerguntasDTO perguntasDTO)
+    {
+        try{
+            Pergunta perg = perguntaService.getPergunta(perguntasDTO.getIdPergunta());
+            perg.setResp(perguntasDTO.getResposta());
+            perg = perguntaService.add(perg);
+            return ResponseEntity.ok(perg);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body("erro");
+        }
+    }
 }

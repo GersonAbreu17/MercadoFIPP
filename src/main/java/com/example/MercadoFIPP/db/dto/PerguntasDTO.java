@@ -5,12 +5,21 @@ public class PerguntasDTO {
     private String resposta;
     private long idUser;
     private long idAnuncio;
+    private long idPergunta;
 
     public PerguntasDTO(String pergunta, String resposta, long idUser, long idAnuncio) {
         this.pergunta = pergunta;
         this.resposta = resposta;
         this.idUser = idUser;
         this.idAnuncio = idAnuncio;
+    }
+
+    public long getIdPergunta() {
+        return idPergunta;
+    }
+
+    public void setIdPergunta(long idPergunta) {
+        this.idPergunta = idPergunta;
     }
 
     public String getPergunta() {

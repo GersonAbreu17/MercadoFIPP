@@ -20,6 +20,10 @@ public class PerguntaService {
         return perguntaRepository.findByIdAnuncio(id);
     }
 
+    public Pergunta getPergunta(Long id){
+        return perguntaRepository.getOne(id);
+    }
+
     public Pergunta add(Pergunta pergunta){
         try{
             pergunta = perguntaRepository.save(pergunta);
