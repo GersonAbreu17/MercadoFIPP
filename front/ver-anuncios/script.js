@@ -60,17 +60,21 @@ function carregarAnuncios() {
             let i = 0;
 
             // Iterando sobre os resultados e limitando a 5 itens
-            while (i < result.length && i < 5) {
+            while (i < result.length) {
+                
                 let ad = result[i];
 
                 html += `
-                <div onclick="abrir_pagina(${ad.id})" style="cursor: pointer;" class="card p-5 container-fluid">
+                <div style="cursor: pointer;" onclick="abrir_pagina(${ad.id})" class="mb-3 card p-5 container-fluid">
                     <h3 class="pb-3">${ad.titulo}</h3>
-                    <div class="divImagem">
-                        <img src="../canvaai.webp" alt="">
-                    </div>
-                </div>
                 `;
+                if(ad.fotos.length > 0)
+                    html += `
+                        <div class="divImagem">
+                            <img src="../uploads/${ad.fotos[0]}" alt="">
+                        </div>
+                    `
+                html += "</div>";                 
                 i++;
             }
 
@@ -81,6 +85,7 @@ function carregarAnuncios() {
 }
 
 function abrir_pagina(id){
+    // alert(id);
     localStorage.setItem("ad", id);
     window.location.href = "pagina-anuncio/pagina.html";
 }

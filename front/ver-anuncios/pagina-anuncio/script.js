@@ -1,7 +1,6 @@
 let anuncio_id = localStorage.getItem("ad");
 
 (function carregarAnuncio() {
-    const apiUrl = "http://localhost:8080/api/user/anuncios/get-one-anuncio";
     const authToken = sessionStorage.getItem("authToken");
 
     const myHeaders = new Headers();
@@ -13,7 +12,7 @@ let anuncio_id = localStorage.getItem("ad");
         redirect: "follow"
     };
 
-    fetch("http://localhost:8080/api/user/anuncios/get-one-anuncio?id=1", requestOptions)
+    fetch("http://localhost:8080/api/user/anuncios/get-one-anuncio?id=" + anuncio_id, requestOptions)
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
@@ -30,7 +29,7 @@ let anuncio_id = localStorage.getItem("ad");
                 const isActive = index === 0 ? "active" : "";
                 fotosContainer.append(`
                     <div class="carousel-item ${isActive}">
-                        <img src="${foto}" class="d-block w-100" alt="Imagem do anúncio">
+                        <img src="../../uploads/${foto.filename}" class="d-block w-100" alt="Imagem do anúncio">
                     </div>
                 `);
             });

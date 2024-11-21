@@ -131,7 +131,7 @@ public class AnunciosVendedorController {
 
                     Files.write(caminhoFoto, foto.getBytes());
 
-                    caminhosDasFotos.add(caminhoFoto.toString());
+                    caminhosDasFotos.add(fileName);
                 }
             } catch (IOException e) {
                 return ResponseEntity.internalServerError().body("Erro ao salvar as fotos: " + e.getMessage());

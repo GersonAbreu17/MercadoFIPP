@@ -24,13 +24,16 @@ console.log(sessionStorage.getItem("authToken"));
                 let ad = result[i];
 
                 html += `
-                <div class="card p-5 container-fluid">
+                <div class="mb-3 card p-5 container-fluid">
                     <h3 class="pb-3">${ad.titulo}</h3>
-                    <div class="divImagem">
-                        <img src="${ad.fotos[0]}" alt="">
-                    </div>
-                </div>
                 `;
+                if(ad.fotos.length > 0)
+                    html += `
+                        <div class="divImagem">
+                            <img src="./uploads/${ad.fotos[0]}" alt="">
+                        </div>
+                    `
+                html += "</div>";                 
                 i++;
             }
 
