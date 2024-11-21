@@ -228,7 +228,7 @@ public class AnunciosVendedorController {
 
     @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
     @PostMapping(value = "addResposta")
-    public ResponseEntity<Object> addResposta(PerguntasDTO perguntasDTO)
+    public ResponseEntity<Object> addResposta(@RequestBody PerguntasDTO perguntasDTO)
     {
         try{
             Pergunta perg = perguntaService.getPergunta(perguntasDTO.getIdPergunta());
@@ -258,7 +258,7 @@ public class AnunciosVendedorController {
 
     @CrossOrigin(origins = {"http://127.0.0.1:5500/", "http://localhost:5500"})
     @GetMapping(value = "getPerguntasVendedor")
-    public ResponseEntity<Object> getPerguntasVenddor(Long id)
+    public ResponseEntity<Object> getPerguntasVendedor(Long id)
     {
         try{
             List<Pergunta> perguntas =  perguntaService.getPerguntas(id);
