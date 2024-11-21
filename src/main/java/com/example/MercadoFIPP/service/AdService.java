@@ -2,6 +2,7 @@ package com.example.MercadoFIPP.service;
 
 import com.example.MercadoFIPP.db.dto.AdDTO;
 import com.example.MercadoFIPP.db.entity.Ad;
+import com.example.MercadoFIPP.db.entity.Category;
 import com.example.MercadoFIPP.db.entity.Foto;
 import com.example.MercadoFIPP.db.entity.Pergunta;
 import com.example.MercadoFIPP.db.repository.AdRepository;
@@ -100,5 +101,9 @@ public class AdService {
 
     public List<Ad> getAdsByUserId(Long userId) {
         return adRepository.getAdsByUserId(userId);
+    }
+
+    public List<Ad> getAnuncioCategoria(Category category) {
+        return adRepository.getAnuncioCategoria(category.getId());
     }
 }

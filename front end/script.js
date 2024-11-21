@@ -1,5 +1,7 @@
 let divAnuncios = $('#divAnuncios');
 
+console.log(sessionStorage.getItem("authToken"));
+
 (function carregarAnuncios() {
     const requestOptions = {
         method: "GET",
@@ -10,7 +12,7 @@ let divAnuncios = $('#divAnuncios');
     };
     
 
-    fetch("http://localhost:8080/api/inicio/get-anuncios", requestOptions)
+    fetch("http://localhost:8080/inicio/ultimosAnuncios")
         .then((response) => response.json()) // Convertendo a resposta para JSON
         .then((result) => {
             console.log(result); // Verificar o formato dos dados recebidos
@@ -23,7 +25,7 @@ let divAnuncios = $('#divAnuncios');
 
                 html += `
                 <div class="card p-5 container-fluid">
-                    <h3 class="pb-3">${ad.title}</h3>
+                    <h3 class="pb-3">${ad.titulo}</h3>
                     <div class="divImagem">
                         <img src="canvaai.webp" alt="">
                     </div>

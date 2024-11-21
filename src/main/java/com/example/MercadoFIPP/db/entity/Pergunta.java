@@ -31,6 +31,11 @@ public class Pergunta {
         this.user= user;
     }
 
+    public Pergunta(String pergunta, Ad ad, User user) {
+        this.text = pergunta;
+        this.ad = ad;
+        this.user = user;
+    }
 
     public Ad getAd() {
         return ad;

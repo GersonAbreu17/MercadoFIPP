@@ -1,5 +1,4 @@
 let nivel = sessionStorage.getItem("nivel");
-nivel = 1;
 
 if(nivel == 1)
 {
