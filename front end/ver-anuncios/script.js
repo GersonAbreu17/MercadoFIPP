@@ -3,25 +3,23 @@ let divAnuncios = $('#divAnuncios');
 
 (function carregarCategorias() {
     categoria.html(""); // Limpa o elemento inicialmente
+
+
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer "+sessionStorage.getItem("authToken"));
+
     const requestOptions = {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${sessionStorage.getItem("authToken")}` // Envia o token corretamente
-        },
-        redirect: "follow"
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow"
     };
 
-    fetch("http://localhost:8080/api/anuncios/get-many-categorias", requestOptions)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
+    fetch("http://localhost:8080/api/user/anuncios/get-many-categorias", requestOptions)
+        .then((response) => response.json())
         .then((result) => {
             console.log(result);
             // Adiciona um item inicial
-            let optionsHtml = `<option value="0" selected disabled hidden>Selecione</option>`;
+            let optionsHtml = `<option value="0" selected hidden>Todas</option>`;
 
             // Constrói o HTML das opções
             if (Array.isArray(result) && result.length > 0) {
@@ -45,19 +43,39 @@ carregarAnuncios();
 
 function carregarAnuncios() {
     const myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG0iLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsIm5pdmVsIjoiMSIsImlhdCI6MTczMjE2NjU1OCwiZXhwIjoxNzMyMTY3NDU4fQ.FyPQDaKoSgLX7YZMsRE9bdQzDEmEbcX6qacWvjTV7YU");
+    myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("authToken"));
 
-    const raw = "";
 
     const requestOptions = {
         method: "GET",
         headers: myHeaders,
-        body: raw,
         redirect: "follow"
     };
 
-    fetch("http://localhost:8080/api/anuncios/anuncios", requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
+    fetch("http://localhost:8080/api/user/anuncios/anuncios", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result)
+            let html = "";
+            let i = 0;
+
+            // Iterando sobre os resultados e limitando a 5 itens
+            while (i < result.length && i < 5) {
+                let ad = result[i];
+
+                html += `
+                <div class="card p-5 container-fluid">
+                    <h3 class="pb-3">${ad.titulo}</h3>
+                    <div class="divImagem">
+                        <img src="../canvaai.webp" alt="">
+                    </div>
+                </div>
+                `;
+                i++;
+            }
+
+            // Atualizando o HTML da div
+            divAnuncios.html(html);
+        })
         .catch((error) => console.error(error));
 }

@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="api/anuncios")
+@RequestMapping(value="api/user/anuncios")
 public class AnunciosController {
     @Autowired
     private AdService adService;
