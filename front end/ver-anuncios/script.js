@@ -1,161 +1,63 @@
-let tbody = $("tbody");
-let table = $("table");
+let categoria = $('#categorySelect');
+let divAnuncios = $('#divAnuncios');
 
-let btnadicionar = $("#btnadicionar");
-let btneditar = $("#btneditar");
-let btnAbrirModalEditar = $("#btnAbrirModalEditar");
-let btnexcluir = $("#btnexcluir");
-let pesquisa = $("#pesquisa");
-let btnpesquisa = $("#btnpesquisa");
-let modalAdicionar = $("#modalAdicionar");
-let addNome = $("#addNome");
-let addNivel = $("#addNivel");
-let addSenha = $("#addSenha");
-let fecharAdd = $("#fecharAdd");
-let modalEditar = $("#modalEditar");
-let editarId = $("#editarId");
-let editarNome = $("#editarNome");
-let editarNivel = $("#editarNivel");
-let editarSenha = $("#editarSenha");
-let fecharEditar = $("#fecharEditar");
-
-//inicializar
-carregarTabela();
-
-
-function carregarTabela() {
+(function carregarCategorias() {
+    categoria.html(""); // Limpa o elemento inicialmente
     const requestOptions = {
         method: "GET",
+        headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem("authToken")}` // Envia o token corretamente
+        },
         redirect: "follow"
     };
 
-    tbody.html('');
-
-    fetch("http://localhost:8080/apis/user/get-many?filtro=" + pesquisa.val(), requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-            console.log(result)
-            result.forEach((e) => {
-                tbody.html(tbody.html() + `
-                    <tr>
-                        <td style="text-align: center;"> <label for="ck_${e.id}" style="width: 100%;"><input id="ck_${e.id}" input type="checkbox" data-id="${e.id}"/></label></td>
-                        <td>${e.id}</td>
-                        <td>${e.name}</td>
-                        <td>${e.pass}</td>
-                        <td>${e.level}</td>
-                    </tr>
-                `)
-            });
+    fetch("http://localhost:8080/api/anuncios/get-many-categorias", requestOptions)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
         })
-        .catch((error) => console.error(error));
-}
+        .then((result) => {
+            console.log(result);
+            // Adiciona um item inicial
+            let optionsHtml = `<option value="0" selected disabled hidden>Selecione</option>`;
 
-function getSelecionados() {
-    let lista = [];
-    $('input[type="checkbox"]:checked').each(function () {
-        lista.push($(this).data('id'));
-    })
-    return lista;
-}
+            // Constrói o HTML das opções
+            if (Array.isArray(result) && result.length > 0) {
+                for (let element of result) {
+                    optionsHtml += `<option value="${element.id}">${element.name.toUpperCase()}</option>`;
+                }
+            } else {
+                optionsHtml += `<option value="" disabled>Nenhuma categoria encontrada</option>`;
+            }
 
-function deletar() {
-    let promises = [];
-
-    let selecionados = getSelecionados();
-    if (selecionados.length > 0) {
-
-        const requestOptions = {
-            method: "GET",
-            redirect: "follow"
-        };
-
-        selecionados.forEach(id => {
-            promises.push(new Promise((resolve) => {
-                fetch("http://localhost:8080/apis/user/delete?id=" + id, requestOptions)
-                    .then((response) => response.text())
-                    .then((result) => {
-                        console.log(result);
-                        resolve();
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        resolve();
-                    });
-            }));
+            // Atualiza o HTML do elemento de uma só vez
+            categoria.html(optionsHtml);
+        })
+        .catch((error) => {
+            console.error('Erro ao carregar categorias:', error);
+            categoria.html(`<option value="" disabled>Erro ao carregar categorias</option>`);
         });
-    } else {
-        console.log("Não há o que deletar");
-    }
+})()
 
-    Promise.all(promises).then(carregarTabela);
-}
+carregarAnuncios();
 
-function adicionar() {
+function carregarAnuncios() {
     const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG0iLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsIm5pdmVsIjoiMSIsImlhdCI6MTczMjE2NjU1OCwiZXhwIjoxNzMyMTY3NDU4fQ.FyPQDaKoSgLX7YZMsRE9bdQzDEmEbcX6qacWvjTV7YU");
 
-    let raw;
-    if(editarId.val().length == 0){
-        raw = JSON.stringify({
-            "name": addNome.val(),
-            "pass": addSenha.val(),
-            "level": addNivel.val()
-        });
-    }
-    else{
-        raw = JSON.stringify({
-            "id": editarId.val(),
-            "name": editarNome.val(),
-            "pass": editarSenha.val(),
-            "level": editarNivel.val()
-        });
-    }
-
-    console.log(addNome.val());
+    const raw = "";
 
     const requestOptions = {
-        method: "POST",
+        method: "GET",
         headers: myHeaders,
         body: raw,
         redirect: "follow"
     };
 
-    fetch("http://localhost:8080/apis/user/add", requestOptions)
+    fetch("http://localhost:8080/api/anuncios/anuncios", requestOptions)
         .then((response) => response.text())
-        .then((result) => {
-            console.log(result);
-            fecharAdd.click();
-            fecharEditar.click();
-            carregarTabela();
-
-        }).catch((error) => {
-            console.error(error);
-            fecharAdd.click();
-            fecharEditar.click();
-            carregarTabela();
-        });
-}
-
-function abrirModalEditar() {
-    let selecionados = getSelecionados();
-    if (selecionados.length == 1) {
-        const requestOptions = {
-            method: "GET",
-            redirect: "follow"
-        };
-
-        fetch("http://localhost:8080/apis/user/get-one?id=" + selecionados[0], requestOptions)
-            .then((response) => response.json())
-            .then((result) => {
-                editarId.val(result.id);
-                editarNome.val(result.name);
-                editarSenha.val(result.pass);
-                editarNivel.val(result.level);
-
-                btnAbrirModalEditar.click();
-
-            })
-            .catch((error) => console.error(error));
-
-    }
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
 }

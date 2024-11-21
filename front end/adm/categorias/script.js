@@ -17,12 +17,15 @@ carregarTabela();
 function carregarTabela() {
     const requestOptions = {
         method: "GET",
+        headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem("authToken")}` // Corrigido para enviar o token no cabeçalho
+        },
         redirect: "follow"
     };
 
     tbody.html('');
 
-    fetch("http://localhost:8080/apis/category/get-many?filtro=" + pesquisa.val(), requestOptions)
+    fetch("http://localhost:8080/api/admin/categorias/get-many?filtro=" + pesquisa.val(), requestOptions)
         .then((response) => response.json())
         .then((result) => {
             console.log(result)
@@ -55,12 +58,15 @@ function deletar() {
 
         const requestOptions = {
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${sessionStorage.getItem("authToken")}` 
+            },
             redirect: "follow"
         };
 
         selecionados.forEach(id => {
             promises.push(new Promise((resolve) => {
-                fetch("http://localhost:8080/apis/category/delete?id=" + id, requestOptions)
+                fetch("http://localhost:8080/api/admin/categorias/delete?id=" + id, requestOptions)
                     .then((response) => response.text())
                     .then((result) => {
                         console.log(result);
@@ -82,6 +88,7 @@ function deletar() {
 function adicionar() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${sessionStorage.getItem("authToken")}`)
 
     let raw;
     if(editarIdCategoria.val().length == 0){
@@ -105,7 +112,7 @@ function adicionar() {
         redirect: "follow"
     };
 
-    fetch("http://localhost:8080/apis/category/add", requestOptions)
+    fetch("http://localhost:8080/api/admin/categorias/add", requestOptions)
         .then((response) => response.text())
         .then((result) => {
             console.log(result);
@@ -128,10 +135,13 @@ function abrirModalEditar() {
     if (selecionados.length == 1) {
         const requestOptions = {
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${sessionStorage.getItem("authToken")}` // Corrigido para enviar o token no cabeçalho
+            },
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/apis/category/get-one?id=" + selecionados[0], requestOptions)
+        fetch("http://localhost:8080/api/admin/categorias/get-one?id=" + selecionados[0], requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 editarIdCategoria.val(result.id);

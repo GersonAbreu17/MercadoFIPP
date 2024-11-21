@@ -26,12 +26,15 @@ carregarTabela();
 function carregarTabela() {
     const requestOptions = {
         method: "GET",
+        headers: {
+            "Authorization": `Bearer ${sessionStorage.getItem("authToken")}` // Corrigido para enviar o token no cabeçalho
+        },
         redirect: "follow"
     };
 
     tbody.html('');
 
-    fetch("http://localhost:8080/apis/user/get-many?filtro=" + pesquisa.val(), requestOptions)
+    fetch("http://localhost:8080/api/admin/usuarios/get-many?filtro=" + pesquisa.val(), requestOptions)
         .then((response) => response.json())
         .then((result) => {
             console.log(result)
@@ -66,12 +69,15 @@ function deletar() {
 
         const requestOptions = {
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${sessionStorage.getItem("authToken")}` // Corrigido para enviar o token no cabeçalho
+            },
             redirect: "follow"
         };
 
         selecionados.forEach(id => {
             promises.push(new Promise((resolve) => {
-                fetch("http://localhost:8080/apis/user/delete?id=" + id, requestOptions)
+                fetch("http://localhost:8080/api/admin/usuarios/delete?id=" + id, requestOptions)
                     .then((response) => response.text())
                     .then((result) => {
                         console.log(result);
@@ -93,6 +99,7 @@ function deletar() {
 function adicionar() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${sessionStorage.getItem("authToken")}`);
 
     let raw;
     if(editarId.val().length == 0){
@@ -120,7 +127,7 @@ function adicionar() {
         redirect: "follow"
     };
 
-    fetch("http://localhost:8080/apis/user/add", requestOptions)
+    fetch("http://localhost:8080/api/admin/usuarios/add", requestOptions)
         .then((response) => response.text())
         .then((result) => {
             console.log(result);
@@ -146,7 +153,7 @@ function abrirModalEditar() {
             redirect: "follow"
         };
 
-        fetch("http://localhost:8080/apis/user/get-one?id=" + selecionados[0], requestOptions)
+        fetch("http://localhost:8080/api/admin/usuarios/get-one?id=" + selecionados[0], requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 editarId.val(result.id);
