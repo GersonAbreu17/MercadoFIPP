@@ -23,4 +23,7 @@ public interface AdRepository extends JpaRepository<Ad,Long> {
 
     @Query(value = "SELECT * FROM PUBLIC.ANUNCIO A WHERE A.CAT_ID = :id",nativeQuery = true)
     List<Ad> getAnuncioCategoria(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM PUBLIC.ANUNCIO A WHERE A.ANU_ID = :id",nativeQuery = true)
+    List<Ad> getUm(@Param("id") Long id);
 }

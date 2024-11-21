@@ -27,7 +27,7 @@ console.log(sessionStorage.getItem("authToken"));
                 <div class="card p-5 container-fluid">
                     <h3 class="pb-3">${ad.titulo}</h3>
                     <div class="divImagem">
-                        <img src="canvaai.webp" alt="">
+                        <img src="${ad.fotos[0]}" alt="">
                     </div>
                 </div>
                 `;

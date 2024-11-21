@@ -125,4 +125,18 @@ public class AnunciosController {
         }
     }
 
+    @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
+    @GetMapping(value = "get-one-anuncio")
+    public ResponseEntity<Object> getAnuncio(Long id)
+    {
+        try{
+            Ad ad = adService.getAd(id);
+            return ResponseEntity.ok(ad);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body("erro");
+        }
+    }
+
 }

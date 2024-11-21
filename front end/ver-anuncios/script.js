@@ -64,7 +64,7 @@ function carregarAnuncios() {
                 let ad = result[i];
 
                 html += `
-                <div class="card p-5 container-fluid">
+                <div onclick="abrir_pagina(${ad.id})" style="cursor: pointer;" class="card p-5 container-fluid">
                     <h3 class="pb-3">${ad.titulo}</h3>
                     <div class="divImagem">
                         <img src="../canvaai.webp" alt="">
@@ -78,4 +78,9 @@ function carregarAnuncios() {
             divAnuncios.html(html);
         })
         .catch((error) => console.error(error));
+}
+
+function abrir_pagina(id){
+    localStorage.setItem("ad", id);
+    window.location.href = "pagina-anuncio/pagina.html";
 }

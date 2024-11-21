@@ -34,6 +34,10 @@ public class AnuncioDTO {
         this.usuario = anuncio.getUser().getName();
     }
 
+    public AnuncioDTO(){
+
+    }
+
     // Getters e Setters
     public long getId() {
         return Id;

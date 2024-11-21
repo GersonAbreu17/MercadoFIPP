@@ -16,9 +16,9 @@ public class Foto
     @JoinColumn(name = "anu_id")
     private Ad ad;
 
-    public Ad getAd() {
-        return ad;
-    }
+//    public Ad getAd() {
+//        return ad;
+//    }
 
     public void setAd(Ad ad) {
         this.ad = ad;

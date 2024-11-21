@@ -23,12 +23,9 @@ public class AdService {
     private FotoRepository fotoRepository;
 
     public Ad getAd(Long id){
-        Optional<Ad> ad = adRepository.findById(id);
-        if(ad.isPresent())
-            return ad.get();
-        return null;
+        List <Ad> ad =  adRepository.getUm(id);
+        return ad.isEmpty() ? null :  ad.getFirst();
     }
-
     public List<Ad> getAll(String filtro)
     {
         if(filtro.isEmpty())

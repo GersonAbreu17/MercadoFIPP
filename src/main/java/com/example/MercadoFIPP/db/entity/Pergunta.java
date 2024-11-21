@@ -37,9 +37,9 @@ public class Pergunta {
         this.user = user;
     }
 
-    public Ad getAd() {
-        return ad;
-    }
+//    public Ad getAd() {
+//        return ad;
+//    }
 
     public User getUser() {
         return user;
