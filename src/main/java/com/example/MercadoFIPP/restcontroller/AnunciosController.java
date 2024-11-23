@@ -82,9 +82,9 @@ public class AnunciosController {
 
     @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
     @GetMapping(value = "anunciosCategoria")
-    public ResponseEntity<Object> getAnunciosCategoria(String cat) {
+    public ResponseEntity<Object> getAnunciosCategoria(Long catId, String titulo) {
         try {
-            List<Ad> listaAnuncios = adService.getAnuncioCategoria(categoryService.getCategory(cat));
+            List<Ad> listaAnuncios = adService.getAnuncioCategoria(titulo ,categoryService.getOne(catId));
 
             if (listaAnuncios.isEmpty()) {
                 return ResponseEntity.ok(Collections.emptyList());

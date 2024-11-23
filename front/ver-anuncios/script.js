@@ -1,5 +1,6 @@
 let categoria = $('#categorySelect');
 let divAnuncios = $('#divAnuncios');
+let searchInput = $("#searchInput");
 
 (function carregarCategorias() {
     categoria.html(""); // Limpa o elemento inicialmente
@@ -19,7 +20,7 @@ let divAnuncios = $('#divAnuncios');
         .then((result) => {
             console.log(result);
             // Adiciona um item inicial
-            let optionsHtml = `<option value="0" selected hidden>Todas</option>`;
+            let optionsHtml = `<option value="0" selected>Todas</option>`;
 
             // Constrói o HTML das opções
             if (Array.isArray(result) && result.length > 0) {
@@ -45,6 +46,18 @@ function carregarAnuncios() {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("authToken"));
 
+    // Obtendo os valores de categoria e título
+    const categoria_id = categoria.val() || "";
+    const titulo_ad = searchInput.val() || "";
+
+    // Construindo os parâmetros da URL
+    const params = new URLSearchParams();
+    if (categoria_id) params.append("catId", categoria_id);
+    if (titulo_ad) params.append("titulo", titulo_ad);
+
+    // Montando a URL com os parâmetros
+    const url = `http://localhost:8080/api/user/anuncios/anunciosCategoria?${params.toString()}`;
+    console.log(url);
 
     const requestOptions = {
         method: "GET",
@@ -52,36 +65,32 @@ function carregarAnuncios() {
         redirect: "follow"
     };
 
-    fetch("http://localhost:8080/api/user/anuncios/anuncios", requestOptions)
+    fetch(url, requestOptions)
         .then((response) => response.json())
         .then((result) => {
-            console.log(result)
+            console.log(result);
             let html = "";
-            let i = 0;
 
-            // Iterando sobre os resultados e limitando a 5 itens
-            while (i < result.length) {
-                
-                let ad = result[i];
-
+            // Construindo o HTML para os anúncios
+            for (const ad of result) {
                 html += `
                 <div style="cursor: pointer;" onclick="abrir_pagina(${ad.id})" class="mb-3 card p-5 container-fluid">
                     <h3 class="pb-3">${ad.titulo}</h3>
                 `;
-                if(ad.fotos.length > 0)
+                if (ad.fotos.length > 0) {
                     html += `
                         <div class="divImagem">
-                            <img src="../uploads/${ad.fotos[0]}" alt="">
+                            <img src="../uploads/${ad.fotos[0]}" alt="Imagem do Anúncio">
                         </div>
-                    `
-                html += "</div>";                 
-                i++;
+                    `;
+                }
+                html += `</div>`;
             }
 
             // Atualizando o HTML da div
             divAnuncios.html(html);
         })
-        .catch((error) => console.error(error));
+        .catch((error) => console.error("Erro ao carregar anúncios:", error));
 }
 
 function abrir_pagina(id){

@@ -100,7 +100,13 @@ public class AdService {
         return adRepository.getAdsByUserId(userId);
     }
 
-    public List<Ad> getAnuncioCategoria(Category category) {
-        return adRepository.getAnuncioCategoria(category.getId());
+    public List<Ad> getAnuncioCategoria(String filtro, Category category) {
+        if(category == null && filtro == null)
+            return adRepository.findAll();
+        if(filtro == null)
+            return adRepository.getAnuncioCategoria(category.getId());
+        if(category == null)
+            return adRepository.findWithFilter(filtro);
+        return adRepository.getAnuncioCategoriaEFiltro(filtro ,category.getId());
     }
 }

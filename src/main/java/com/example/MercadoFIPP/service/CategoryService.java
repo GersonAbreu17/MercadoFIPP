@@ -22,6 +22,8 @@ public class CategoryService {
     }
 
     public Category getOne(Long id){
+        if(id == null)
+            return null;
         return categoryRepository.getId(id);
     }
 

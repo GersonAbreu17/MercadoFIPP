@@ -27,12 +27,13 @@ function carregarAnuncio() {
             fotosContainer.empty();
             data.fotos.forEach((foto, index) => {
                 const isActive = index === 0 ? "active" : "";
-                fotosContainer.empty();
                 fotosContainer.append(`
                     <div class="carousel-item ${isActive}">
                         <img src="../../uploads/${foto.filename}" class="d-block w-100" alt="Imagem do anúncio">
                     </div>
                 `);
+
+                console.log(foto.filename);
             });
             carregarPerguntas(data.perguntas)
         })

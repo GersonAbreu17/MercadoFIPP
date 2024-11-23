@@ -30,7 +30,6 @@ const logar = () => {
             if (result !== "erro") {
                 sessionStorage.setItem("authToken", result.token);
                 sessionStorage.setItem("name", username.value);
-                sessionStorage.setItem("pass", password.value);
                 sessionStorage.setItem("nivel", result.nivel);
                 window.location.assign("../index.html");
             } else {
