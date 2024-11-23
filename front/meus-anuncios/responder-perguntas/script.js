@@ -76,7 +76,7 @@ function carregarPerguntas(perguntas){
                     ${pergunta.resp != null ? pergunta.resp : ""}
                 </p>
                 <div class="perguntar acesso-2 mt-3">
-                    <textarea class="form-control" type="text" name="perguntar" id="perguntar"></textarea>
+                    <textarea class="form-control" type="text" name="perguntar" id="perguntar___${pergunta.id}"></textarea>
                     <button onclick="responder(${pergunta.id})" class="btn-perguntar btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>`
@@ -90,5 +90,52 @@ function carregarPerguntas(perguntas){
 
 function responder(id)
 {
-    
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer "+ sessionStorage.getItem("authToken"));
+
+    const raw = JSON.stringify({
+        "resposta": $("#perguntar___" + id).val(),
+        "idPergunta": id
+    });
+
+    const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+    };
+
+    fetch("http://localhost:8080/api/vendedor/meusanuncios/addResposta", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+        console.log(result);
+        carregarAnuncio();
+    })
+    .catch((error) => console.error(error));
+}
+
+function editarPagina(){
+    localStorage.setItem("ad", anuncio_id);
+    window.location.href = "../edit-anuncio/pagina.html";
+}
+
+function finalizarAnuncio(){
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer "+sessionStorage.getItem("authToken"));
+
+    const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow"
+    };
+
+    fetch("http://localhost:8080/api/vendedor/meusanuncios/delete?id=" + anuncio_id, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+        console.log(result)
+        alert("Anuncio finalizado!");
+        window.location.href = "../pagina.html";
+    })
+    .catch((error) => console.error(error));
 }

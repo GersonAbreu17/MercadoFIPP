@@ -1,44 +1,6 @@
 let categoria = $('#categorySelect');
 let divAnuncios = $('#divAnuncios');
 
-(function carregarCategorias() {
-    categoria.html(""); // Limpa o elemento inicialmente
-
-
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+sessionStorage.getItem("authToken"));
-
-    const requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow"
-    };
-
-    fetch("http://localhost:8080/api/user/anuncios/get-many-categorias", requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-            console.log(result);
-            // Adiciona um item inicial
-            let optionsHtml = `<option value="0" selected hidden>Todas</option>`;
-
-            // Constrói o HTML das opções
-            if (Array.isArray(result) && result.length > 0) {
-                for (let element of result) {
-                    optionsHtml += `<option value="${element.id}">${element.name.toUpperCase()}</option>`;
-                }
-            } else {
-                optionsHtml += `<option value="" disabled>Nenhuma categoria encontrada</option>`;
-            }
-
-            // Atualiza o HTML do elemento de uma só vez
-            categoria.html(optionsHtml);
-        })
-        .catch((error) => {
-            console.error('Erro ao carregar categorias:', error);
-            categoria.html(`<option value="" disabled>Erro ao carregar categorias</option>`);
-        });
-})()
-
 carregarAnuncios();
 
 function carregarAnuncios() {

@@ -18,7 +18,9 @@
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 
     <!--Ícones-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <link rel="stylesheet" href="estilo.css">
     <link rel="stylesheet" href="../../estilocomum.css">
@@ -28,8 +30,13 @@
 
 <body>
     <header class="d-flex justify-content-between">
-        <a style="text-decoration: none; color: white;" href="../../index.html"><h1>Mercado FIPP</h1></a>
-        <a style="color: white;" href="../../login/pagina.html"><h4 style="cursor: pointer;" onclick="deslogar()"><i class="fa-solid fa-right-to-bracket" style="padding: 20px;"></i></h4></a>
+        <a style="text-decoration: none; color: white;" href="../../index.html">
+            <h1>Mercado FIPP</h1>
+        </a>
+        <a style="color: white;" href="../../login/pagina.html">
+            <h4 style="cursor: pointer;" onclick="deslogar()"><i class="fa-solid fa-right-to-bracket"
+                    style="padding: 20px;"></i></h4>
+        </a>
     </header>
     <aside>
         <ul>
@@ -42,16 +49,25 @@
     <main>
         <div class="acesso-2 d-none">
             <section>
+
+                <div class="d-flex justify-content-end">
+                        <h3>
+                            <i onclick="editarPagina()" style="cursor: pointer;" class="fa-solid fa-pen-to-square"></i>
+                            <i onclick="finalizarAnuncio()" style="cursor: pointer;"  class="fa-solid fa-trash"></i>
+                        </h3>
+                </div>
                 <h1 style="text-align: center;" id="titulo">Titulo do anuncio</h1>
                 <div class="info-produto">
                     <div id="carousel" class="carousel slide" style="max-width: 600px; max-height: 500px;">
                         <div class="carousel-inner" id="fotos">
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel"
+                            data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel"
+                            data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -59,7 +75,10 @@
                     <div class="info-texto">
                         <p id="preco"><strong>Preço: </strong> R$ 33.700</p>
                         <p id="categoria"><strong>Categoria: </strong> Animais</p>
-                        <p id="descricao"><strong>Descrição: </strong> Um panda de bicicleta é uma cena divertida e imaginativa que combina a fofura do panda com a ideia de um passeio descontraído. Imagine um panda com pelagem branca e preta, equilibrando-se habilmente em uma bicicleta, talvez com um capacete estiloso para segurança. </p>
+                        <p id="descricao"><strong>Descrição: </strong> Um panda de bicicleta é uma cena divertida e
+                            imaginativa que combina a fofura do panda com a ideia de um passeio descontraído. Imagine um
+                            panda com pelagem branca e preta, equilibrando-se habilmente em uma bicicleta, talvez com um
+                            capacete estiloso para segurança. </p>
                         <p id="data"><strong>Data: </strong> 19/11/2024</p>
                     </div>
                 </div>
