@@ -1,0 +1,26 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: rgb(234, 240, 229);
+}
+
+body > div{
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    min-width: 400px;
+    max-width: 500px;
+    width: 50%;
+}
+
+input{
+    margin-bottom: 20px;
+}
+
+
+
+h2{
+    text-align: center;
+}

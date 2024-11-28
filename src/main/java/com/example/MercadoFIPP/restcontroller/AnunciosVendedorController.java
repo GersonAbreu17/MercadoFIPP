@@ -175,17 +175,53 @@ public class AnunciosVendedorController {
 
     @CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
     @PutMapping(value = "update-anuncio")
-    public ResponseEntity<Object> update(@RequestBody AdDTO anuncio) {
+    public ResponseEntity<Object> update(@RequestPart("anuncio") AnuncioDTO anuncio, @RequestPart("fotos") MultipartFile[] fotos) {
         try {
-            Ad existingAd = adService.getAd(anuncio.getId());
+
+//            Claims claim = JWTTokenProvider.getAllClaimsFromToken(anuncio.getUsuario());
+//            String usuario = claim.getSubject();
+            if(fotos == null)
+                return ResponseEntity.badRequest().body("Você precisa adicionar pelo menos uma foto.");
+
+
+            if (fotos.length > 3) {
+                return ResponseEntity.badRequest().body("Você pode enviar no máximo 3 fotos.");
+            }
+//
+//            if(userService.getMany(usuario) != adService.getAd((long) anuncio.getIdAnuncio()).getUser())
+//                return ResponseEntity.badRequest().body("Não autorizado!");
+
+
+            Ad existingAd = adService.getAd((long) anuncio.getIdAnuncio());
             if (existingAd == null) {
                 return ResponseEntity.badRequest().body("Anúncio não encontrado.");
             }
 
-            existingAd.setTitle(anuncio.getTitle());
-            existingAd.setDescr(anuncio.getDescr());
-            existingAd.setPrice(anuncio.getPrice());
-            existingAd.setCategory(new Category(anuncio.getId()));
+            existingAd.setTitle(anuncio.getTitulo());
+            existingAd.setDescr(anuncio.getDescricao());
+            existingAd.setPrice(anuncio.getPreco());
+            existingAd.setDate(anuncio.getData());
+            existingAd.setCategory(categoryService.getOne(anuncio.getCategoria()));
+
+            List<String> caminhosDasFotos = new ArrayList<>();
+
+            try {
+                Path uploadPath = Paths.get(uploadDir);
+                Files.createDirectories(uploadPath);
+
+                for (MultipartFile foto : fotos) {
+                    String fileName = System.currentTimeMillis() + "_" + foto.getOriginalFilename();
+                    Path caminhoFoto = uploadPath.resolve(fileName);
+
+                    Files.write(caminhoFoto, foto.getBytes());
+
+                    caminhosDasFotos.add(fileName);
+                }
+            } catch (IOException e) {
+                return ResponseEntity.internalServerError().body("Erro ao salvar as fotos: " + e.getMessage());
+            }
+
+            fotoService.updateFotos(caminhosDasFotos, existingAd);
 
             adService.updateAd(existingAd);
 

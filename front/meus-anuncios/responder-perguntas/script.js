@@ -73,13 +73,11 @@ function carregarPerguntas(perguntas){
                     ${pergunta.text != null ? pergunta.text : ""}
                 </p>
                 <p class="resposta">
-                    <strong>Vendedor: </strong>
-                    ${pergunta.resp != null ? pergunta.resp : ""}
-                </p>
-                <div class="perguntar acesso-2 mt-3">
+                    ${pergunta.resp != null ? "<strong>Vendedor: </strong>" + pergunta.resp : `<div class="perguntar acesso-2 mt-3">
                     <textarea class="form-control" type="text" name="perguntar" id="perguntar___${pergunta.id}"></textarea>
                     <button onclick="responder(${pergunta.id})" class="btn-perguntar btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
+                </div>`}
+                </p>
             </div>`
         )
     }

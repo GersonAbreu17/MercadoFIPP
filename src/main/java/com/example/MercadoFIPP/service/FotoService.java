@@ -57,4 +57,22 @@ public class FotoService {
     public List<Foto> getFotos(Long id) {
         return fotoRepository.findByIdAnuncio(id);
     }
+
+    public List<Foto> updateFotos(List<String> caminhosDasFotos, Ad anuncio) {
+        List<Foto> fotos = new ArrayList<>();
+        List<Foto> fotos2 = fotoRepository.findByIdAnuncio(anuncio.getId());
+
+        for(Foto foto : fotos2)
+        {
+            if(!caminhosDasFotos.contains(foto.getFilename()))
+            {
+                fotoRepository.delete(foto);
+            }
+        }
+        for(String filename : caminhosDasFotos)
+        {
+            fotos.add(fotoRepository.save(new Foto(filename, anuncio)));
+        }
+        return fotos;
+    }
 }

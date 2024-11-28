@@ -21,6 +21,15 @@ public class AnuncioDTO {
     private String NomeCategoria;
     private List<String> fotos;
     private List<String> perguntas;
+    private int idAnuncio;
+
+    public int getIdAnuncio() {
+        return idAnuncio;
+    }
+
+    public void setIdAnuncio(int idAnuncio) {
+        this.idAnuncio = idAnuncio;
+    }
 
     public AnuncioDTO(Ad anuncio, List<String> fotos, List<String> perguntas, String categoria) {
         this.Id = anuncio.getId();

@@ -4,6 +4,10 @@
     font-family: 'Roboto Mono';
 }
 
+body{
+    background-color: rgb(234, 240, 229)
+}
+
 header {
     background-color: rgb(0, 124, 48);
     color: white;

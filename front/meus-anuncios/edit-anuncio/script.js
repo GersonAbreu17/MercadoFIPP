@@ -4,18 +4,10 @@ let preco = $("#preco");
 let categoria = $("#categoria");
 let descricao = $("#descricao");
 let fotos = $("#fotos");
+let anuncio_id = localStorage.getItem("ad");
+let idSelecionado = 0;
 
-(function carregarData() {
-    let date = new Date();
-    let ano = date.getFullYear();
-    let mes = date.getMonth() + 1;
-    let dia = date.getDate();
-    mes = mes < 10 ? '0' + mes : mes;
-    dia = dia < 10 ? '0' + dia : dia;
-    document.getElementById('data').value = `${ano}-${mes}-${dia}`;
-})();
-
-(function carregarCategorias() {
+function carregarCategorias() {
     categoria.html("");
     const requestOptions = {
         method: "GET",
@@ -29,18 +21,24 @@ let fotos = $("#fotos");
         .then((response) => response.json())
         .then((result) => {
             console.log(result)
-            categoria.html(`<option value="0" selected disabled hidden>Selecione</option>`);
+            let selected;
+
             for(let element of result){
+                
+                if(result.id == idSelecionado)
+                    selected = "selected";
+                else
+                    selected = "";
+
                 categoria.html(categoria.html()+`
-                    <option value="${element.id}">${element.name.toUpperCase()}</option>
+                    <option ${selected} value="${element.id}">${element.name.toUpperCase()}</option>
                 `)
             }
         })
         .catch((error) => console.error(error));
-})()
+}
 
 async function adicionarAnuncio() {
-
     const titulo = document.querySelector('#titulo').value;
     const data = document.querySelector('#data').value; 
     const preco = document.querySelector('#preco').value;
@@ -49,6 +47,7 @@ async function adicionarAnuncio() {
     const fotos = document.querySelector('#fotos').files;
 
     const anuncioDTO = {
+        idAnuncio: parseInt(anuncio_id),
         titulo: titulo,
         data: data,
         preco: parseFloat(preco),
@@ -60,31 +59,34 @@ async function adicionarAnuncio() {
     const formData = new FormData();
     formData.append("anuncio", new Blob([JSON.stringify(anuncioDTO)], { type: "application/json" }));
 
-    for (let i = 0; i < fotos.length; i++) {
-        formData.append("fotos", fotos[i]);
-    }
+    if(fotos.length > 0)
+        for (let i = 0; i < fotos.length; i++) {
+            formData.append("fotos", fotos[i]);
+        }
+    else
+        return alert("Você precisa adicionar pelo menos uma foto.");
 
     try {
-        const response = await fetch("http://localhost:8080/api/vendedor/meusanuncios/criarAnuncio", {
-            method: "POST",
+        const response = await fetch("http://localhost:8080/api/vendedor/meusanuncios/update-anuncio", {
+            method: "PUT",
             body: formData,
             headers: {
-                "Authorization": `Bearer ${sessionStorage.getItem("authToken")}` 
+                "Authorization": "Bearer " + sessionStorage.getItem("authToken")
             },
             redirect: "follow"
         });
 
         if (response.ok) {
-            const resultado = await response.text();
-            alert(resultado);
+            const resultado = await response.json();
+            alert("Anuncio alterado com sucesso");
             document.querySelector("#formAnuncio").reset(); 
         } else {
             const erro = await response.text();
-            alert("Erro ao criar anúncio: " + erro);
+            alert("Erro ao editar anúncio: " + erro);
         }
     } catch (err) {
         console.error("Erro ao enviar requisição:", err);
-        alert("Erro inesperado ao criar anúncio.");
+        alert("Erro inesperado ao editar anúncio.");
     }
 }
 
@@ -127,3 +129,40 @@ function validarCampos() {
 
     return isValid;
 }
+
+function carregarAnuncio() {
+    const authToken = sessionStorage.getItem("authToken");
+
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem("authToken"));
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    fetch("http://localhost:8080/api/user/anuncios/get-one-anuncio?id=" + anuncio_id, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            console.log(result)
+
+            titulo.val(result.title)
+            data.val(result.date)
+            descricao.val(result.descr)
+            preco.val(result.price)
+            categoria.val(result.category.name)
+            idSelecionado = result.category.id;
+            
+            carregarCategorias();
+
+        })
+        .catch((error) => console.error(error));
+
+    if (!authToken) {
+        console.error("Token de autenticação não encontrado.");
+        return;
+    }
+}
+
+carregarAnuncio();

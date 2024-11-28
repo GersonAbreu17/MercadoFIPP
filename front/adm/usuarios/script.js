@@ -45,7 +45,7 @@ function carregarTabela() {
                         <td>${e.id}</td>
                         <td>${e.name}</td>
                         <td>${e.pass}</td>
-                        <td>${e.level}</td>
+                        <td>${e.level == 1 ? "Administrador" : e.level == 2 ? "Vendedor" : e.level == 3 ? "Usuário" : ""}</td>
                     </tr>
                 `)
             });
@@ -147,10 +147,20 @@ function adicionar() {
 
 function abrirModalEditar() {
     let selecionados = getSelecionados();
-    if (selecionados.length == 1) {
+    
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${sessionStorage.getItem("authToken")}`);
+
+    if(selecionados.length > 1)
+        alert("Selecione somente um registro!");
+    else if(selecionados.length < 1)
+        alert("Selecione pelo menos um registro!");
+    else{
         const requestOptions = {
             method: "GET",
-            redirect: "follow"
+            redirect: "follow",
+            headers: myHeaders
         };
 
         fetch("http://localhost:8080/api/admin/usuarios/get-one?id=" + selecionados[0], requestOptions)

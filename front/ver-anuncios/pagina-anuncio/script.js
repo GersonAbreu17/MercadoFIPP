@@ -22,6 +22,7 @@ function carregarAnuncio() {
             $("#categoria").html(`<strong>Categoria: </strong> ${data.category.name}`);
             $("#descricao").html(`<strong>Descrição: </strong> ${data.descr}`);
             $("#data").html(`<strong>Data: </strong> ${formatarDataParaBR(data.date)}`);
+            $("#dono").html(`<strong>Dono do anúncio: </strong> ${data.user.name}`);
 
             const fotosContainer = $("#fotos");
             fotosContainer.empty();
@@ -68,8 +69,7 @@ function carregarPerguntas(perguntas){
                     ${pergunta.text != null ? pergunta.text : ""}
                 </p>
                 <p class="resposta">
-                    <strong>Vendedor: </strong>
-                    ${pergunta.resp != null ? pergunta.resp : ""}
+                    ${pergunta.resp != null ? "<strong>Vendedor: </strong>" + pergunta.resp : ""}
                 </p>
             </div>`
         )

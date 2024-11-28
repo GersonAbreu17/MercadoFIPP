@@ -36,5 +36,5 @@ const logar = () => {
                 alert("Usuário não encontrado");
             }
         })
-        .catch((error) => console.log("Erro:", error));
+        .catch((error) => alert("Credenciais incorreta!"));
 };

@@ -132,7 +132,12 @@ function adicionar() {
 
 function abrirModalEditar() {
     let selecionados = getSelecionados();
-    if (selecionados.length == 1) {
+
+    if(selecionados.length > 1)
+        alert("Selecione somente um registro!");
+    else if(selecionados.length < 1)
+        alert("Selecione pelo menos um registro!");
+    else{
         const requestOptions = {
             method: "GET",
             headers: {

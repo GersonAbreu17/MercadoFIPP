@@ -33,5 +33,6 @@ const requestOptions = {
     })
     .catch(
         (error) => {console.log(error)
+        if(window.location.href != "http://127.0.0.1:5500/index.html")
         window.location.href = "http://127.0.0.1:5500/login/pagina.html"
     });
